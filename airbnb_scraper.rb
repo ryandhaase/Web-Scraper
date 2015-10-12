@@ -21,14 +21,14 @@ end
 
 details = []
 page.css('div.text-muted.listing-location.text-truncate').each do |line|
-  details << line.text
+  details << line.text.strip.split(/ · /)
 end
 
 # Write data to CSV file
 CSV.open('airbnb_listings.csv', 'w') do |file|
-  file << ['Listing Name', 'Price', 'Details']
-  
+  file << ['Listing Name', 'Price', 'Room Type', 'Reviews', 'Location']
+
   name.length.times do |i|
-    file << [name[i], price[i], details[i]]
+    file << [name[i], price[i], details[i][0], details[i][1], details[i][2]]
   end
 end
