@@ -1,3 +1,4 @@
+
 require 'nokogiri'
 require 'open-uri'
 require 'csv'
@@ -36,7 +37,15 @@ max_page.times do |i|
   end
 
   page.css('div.text-muted.listing-location.text-truncate').each do |line|
-    details << line.text.strip.split(/·/).map(&:strip)
+    subarray = line.text.strip.split(/·/)
+
+    # TODO: sometimes the star rating is skipped all together when there is a star rating on the page
+
+    if subarray.length == 3
+      details << subarray
+    else 
+      details << [subarray[0], 'Missing Star Rating', subarray[1]]
+    end
   end
 end
 
